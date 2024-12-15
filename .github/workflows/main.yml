@@ -1,6 +1,5 @@
 name: Unit tests, TODOs to issues and linting
 
-# Określamy, kiedy pipeline ma się uruchomić
 on:
   push:
     branches:
@@ -27,30 +26,26 @@ jobs:
           path: ~/.cache/pip  # Określamy ścieżkę, gdzie zapisujemy zależności
           key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}  # Klucz cache oparty na pliku requirements.txt
           restore-keys: |
-            ${{ runner.os }}-pip-  
-        # Zastosowanie zapasowego klucza w przypadku braku dopasowania
-      # 3. Instalowanie Pythona (wersja 3.12 w tym przypadku)
+            ${{ runner.os }}-pip-  # Zastosowanie zapasowego klucza w przypadku braku dopasowania
+
+      # 3. Instalowanie Pythona 
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.9' 
 
       # 4. Instalowanie zależności (np. coverage do raportowania pokrycia kodu)
-      - name: "Install dependencies"
+      - name: Install dependencies
         run: |
-        
           python -m pip install --upgrade pip  
-          # Aktualizujemy pip
-          # Instalujemy paczkę coverage
-          pip install coverage  
+          pip install coverage 
 
       # 5. Uruchamiamy testy jednostkowe i generujemy raport pokrycia
-      - name: "Run tests with coverage"
+      - name: Run tests with coverage
         run: |
           coverage run -m unittest discover test  
-          
-          coverage report  # Raport w terminalu
-          coverage html  # Raport w formacie HTML
+          coverage report  
+          coverage html  
 
   # Job 2: Lintowanie kodu
   lint:
@@ -105,6 +100,7 @@ jobs:
         run: |
           git config --global user.name "github-actions[bot]"  
           git config --global user.email "github-actions[bot]@users.noreply.github.com" 
+
       # 4. Sprawdzamy, czy są zmiany do commitowania, a jeśli tak, commitujemy i pushujemy
       - name: Commit and Push Changes
         run: |
